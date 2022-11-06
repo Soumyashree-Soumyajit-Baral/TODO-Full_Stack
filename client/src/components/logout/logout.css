@@ -1,0 +1,7 @@
+.logoutbtn{
+    position: absolute;
+    left: 8%;
+    top: 87%;
+    cursor: pointer;
+    font-weight: bold;
+}

@@ -1,0 +1,48 @@
+header{
+    border: 1px solid black;
+    height: 90px;
+    display: flex;
+    justify-content: space-between;
+    background-color: aqua;
+    color:rgb(2, 1, 5)
+
+
+}
+h2{
+    margin-right: 30px;
+    margin-top: 30px;
+}
+aside{
+    position: absolute;
+    top: 12.5%;
+    border: 2px solid black;
+    height: 87%;
+    width: 20%;
+    background-color: greenyellow;
+    align-items: center;
+}
+h3{
+    margin-top: 40px;
+    margin-left: 90px;
+}
+.activity{
+    border: 1px solid black;
+    height: 30px;
+    width: 150px;
+    position: absolute;
+    top: 16%;
+    right: 5%;
+    background-color: blueviolet;
+    color: white;
+    cursor: pointer;
+}
+table{
+    position: absolute;
+    top: 25%;
+    left: 40%;
+    background-color: blue;
+    color: white;
+}
+td{
+    width: 120px;
+}
