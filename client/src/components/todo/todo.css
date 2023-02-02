@@ -24,6 +24,7 @@ aside{
 h3{
     margin-top: 40px;
     margin-left: 90px;
+    cursor: pointer;
 }
 .activity{
     border: 1px solid black;
@@ -40,9 +41,15 @@ table{
     position: absolute;
     top: 25%;
     left: 40%;
-    background-color: blue;
-    color: white;
+    /* background-color: blue; */
+    /* color: white; */
 }
 td{
     width: 120px;
+}
+th{
+    background-color: rgb(229, 17, 222);
+}
+.rfs{
+    cursor: pointer;
 }

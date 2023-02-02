@@ -17,8 +17,9 @@ function Login() {
                 method:"post",
                 data:{username:signupState.username, password:signupState.password}
             }).then((res)=>{
-                // console.log(res.data.authToken)
+                // console.log(res.data)
                 localStorage.setItem("Authorization", res.data.authToken)
+                localStorage.setItem("name",res.data.name)
                 
             }).catch((err)=>{
                 console.log(err)

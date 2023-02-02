@@ -6,6 +6,7 @@ function Logout() {
     const navigate=useNavigate()
     const handleLogout=()=>{
         localStorage.setItem("Authorization", "")
+        localStorage.removeItem("name")
         navigate("/")
     }
   return (
