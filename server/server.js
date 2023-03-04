@@ -8,7 +8,8 @@ const app=express()
 const signupModal=require("./modals/userinfo");
 const {isUserExist, genPasswordHash}=require("./utility/utility")
 const todoModel=require("./modals/usertodoinfo")
-const unProtected=["/login","/signup"]
+const unProtected=["/login","/signup","/"]
+const DATABASE=process.env.DATABASE
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 app.use(cors());
@@ -16,6 +17,7 @@ app.use((req,res,next)=>{
     if(unProtected.includes(req.url)){
         next()
     }else{
+        
         if(req.headers.authorization){
             jwt.verify(req.headers.authorization, process.env.SECRET_KEY, (err,uname)=>{
                 if(err){
@@ -30,20 +32,26 @@ app.use((req,res,next)=>{
     }
 })
 
-
-app.listen(process.env.PORT || 5000,(err)=>{
+const port=process.env.PORT || 5000
+app.listen(port,(err)=>{
     if(err){
         console.log(err)
     }else{
-        console.log("server started")
+        console.log("server started", port)
     }
 })
 
-mongoose.connect("mongodb://localhost/todo", ()=>{
-    console.log("connected to db")
-}, (err)=>{
-    console.log(err)
-})
+// mongoose.connect("mongodb://localhost/todo", ()=>{
+//     console.log("connected to db")
+// }, (err)=>{
+//     console.log(err)
+// })
+mongoose.connect(`${DATABASE}`,()=>{
+    console.log('connected to db');
+    // console.log(DATABASE)
+  },(err)=>{
+    console.log(err);
+  })
 
 
 
@@ -88,8 +96,10 @@ app.post("/signup",async (req,res)=>{
 //     })
 // })
 app.post("/login",(req,res)=>{
+    console.log(req.body.username)
     signupModal.find({username:req.body.username}).then((userData)=>{
         if(userData.length){
+            console.log(req.body.username)
             bcrypt.compare(req.body.password, userData[0].password).then((val)=>{
                 if(val){
                     const authToken= jwt.sign(userData[0].username, process.env.SECRET_KEY)
@@ -104,12 +114,14 @@ app.post("/login",(req,res)=>{
     })
 })
 
+
 app.get("/uname",(req,res)=>{
     let name=req.username;
     res.send({name})
 })
 
 app.post("/addtodo",async(req,res)=>{
+    console.log("enter to add todo route")
     const user = req.username;
     const data=req.body
     console.log(data,user)
@@ -137,9 +149,9 @@ app.get("/alltasks", async (req, res) => {
     try {
       const user = req.username;
       const data = await todoModel.find({ user });
-    //   console.log(data)
+      console.log(data)
       const tododata = data.map((d) => d.todos);
-    //   console.log(...tododata)
+      console.log(...tododata)
       res.status(200).send(...tododata);
     } catch {
       res.status(400).send("An error occured while getting data");
@@ -154,7 +166,7 @@ app.get("/alltasks", async (req, res) => {
         { $pull: { todos: { _id: { $in: deleteitems } } } }
       );
       if (deleted.modifiedCount) {
-        console.log("done")
+        // console.log("done")
         res.status(200).send("task Deleted Successfully");
       } else {
         res.status(200).send("There is no task to delete");
@@ -166,7 +178,7 @@ app.get("/alltasks", async (req, res) => {
 
   app.put("/edit/:id",(req,res)=>{
     const todoID=req.params.id
-    console.log(todoID)
+    // console.log(todoID)
     todoModel.updateOne(
         {
             "todos._id":todoID
@@ -180,4 +192,9 @@ app.get("/alltasks", async (req, res) => {
         }).catch((err)=>{
             res.status(400).send(err.message)
         })
+})
+
+app.get("/",(req,res)=>{
+    const name={"App":"Full stack Todo List"}
+    res.status(200).send({name})
 })

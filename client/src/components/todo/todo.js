@@ -1,23 +1,19 @@
 import React from 'react'
 
-import { useState, useEffect , useLayoutEffect} from "react"
-// import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from "react"
 import axios from 'axios'
 import Logout from '../logout/logout'
 import "./todo.css"
 
 function Todo() {
-    // const navigate = useNavigate()
     const [uname, setUname] = useState("")
-    // const [act, setAct] = useState({})
     const [actList, setActList] = useState([])
-    const authtoken = localStorage.getItem("Authorization")
-    const refresh=()=>{
+    const refresh = () => {
         window.location.reload(false);
     }
     const handleEdit = (id) => {
         const token = localStorage.getItem("Authorization")
-        const work= prompt("Enter the task")
+        const work = prompt("Enter the task")
         console.log(work)
         axios({
             url: `http://localhost:5000/edit/${id}`,
@@ -26,7 +22,7 @@ function Todo() {
                 authorization: token
             },
             data: {
-                task:work
+                task: work
             }
         }).then((res) => {
             console.log(res.data)
@@ -35,7 +31,7 @@ function Todo() {
         })
         setTimeout(() => {
             window.location.reload(false);
-        }, 100);
+        }, 10);
     }
     const deletesingle = (id) => {
         let data = [id];
@@ -52,7 +48,7 @@ function Todo() {
         });
         setTimeout(() => {
             window.location.reload(false);
-        }, 1000);
+        }, 10);
         alert("task will be deleted !")
     };
     const handleAdd = () => {
@@ -74,7 +70,7 @@ function Todo() {
         })
         setTimeout(() => {
             window.location.reload(false);
-        }, 100);
+        }, 10);
     }
 
     useEffect(() => {
@@ -91,46 +87,32 @@ function Todo() {
             url: "http://localhost:5000/uname",
             method: "get",
             headers: {
-                authorization:token
+                authorization: token
             }
         }).then((res) => {
-            setUname(res.data.name)
+            setUname(res.data.name.toUpperCase())
         }).catch((err) => {
             console.log(err)
         })
-        // setTimeout(() => {
-        //     window.location.reload(false);
-        //   }, 1000);
     }, [])
     useEffect(() => {
-        let token =  localStorage.getItem("Authorization")
-        console.log(token)
+        let token = localStorage.getItem("Authorization")
+
         axios({
             url: "http://localhost:5000/alltasks",
             method: "get",
             headers: {
-                authorization:token
+                authorization: token
             }
         }).then((res) => {
-            console.log(res.data,token)
-            // setTimeout(()=>{
-            //     setActList([...res.data])
-            // },100)
+            // console.log(res.data)
             setActList([...res.data])
+            // console.log(actList)
         }).catch((err) => {
             console.log(err)
         })
-        // setTimeout(() => {
-        //     window.location.reload(false);
-        //   }, 1000);
-        // window.location.reload(false);
+
     }, [])
-    // useEffect(()=>{
-    //     setTimeout(() => {
-    //             window.location.reload(false);
-    //           }, 1000); 
-    // },[])
-    
 
     // useEffect(()=>{
     //     let token=localStorage.getItem("Authorization")
@@ -153,7 +135,7 @@ function Todo() {
     // },[])
     return (
         <>
-            
+
             <header>
                 <h1>Todo List</h1>
                 <h2>Hello!   {uname}</h2>
@@ -162,20 +144,20 @@ function Todo() {
                 <h3 className="rfs" onClick={refresh}>Show To do List</h3>
             </aside>
             <div className='activity' onClick={handleAdd}>Add New Activity</div>
-            
+
             <div>
                 <table border="1px">
                     <thead>
                         <tr>
-                        <th>Activity</th>
-                        <th>Action 1</th>
-                        <th>Action 2</th>
+                            <th>Activity</th>
+                            <th>Action 1</th>
+                            <th>Action 2</th>
                         </tr>
                     </thead>
-                    {actList.map((k, i) => {
-                        if(k.task){
-                            return (<tbody key={i}>
-                                <tr>
+
+                    {actList.length > 0 ? actList.map((k, i) => {
+                        return (<tbody key={i}>
+                            <tr>
                                 <td>{k.task}</td>
                                 <td>
                                     <button onClick={() => handleEdit(k._id)}>Edit</button>
@@ -183,11 +165,10 @@ function Todo() {
                                 <td>
                                     <button onClick={() => deletesingle(k._id)}>Delete</button>
                                 </td>
-                                </tr>
-                            </tbody>)
-                        }
-                        
-                    })}
+                            </tr>
+                        </tbody>)
+
+                    }) : ""}
                 </table>
             </div>
             <Logout></Logout>
