@@ -13,7 +13,7 @@ function App() {
           <Route path="/signup" element={<Signup/>}></Route>
           <Route path="/" exact element={<Login/>}></Route>
           <Route element={<Protective/>}>
-          <Route path="/todo"  element={<Todo/>}></Route>
+            <Route path="/todo"  element={<Todo/>}></Route>
           </Route>
           
           <Route path="/logout"  element={<Logout/>}></Route>

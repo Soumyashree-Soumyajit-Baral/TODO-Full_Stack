@@ -22,3 +22,8 @@
     align-items: center;
     background-color: rgb(205, 197, 197);
 }
+.signbtn{
+    cursor: pointer;
+    color: rgb(0, 60, 255);
+    font-weight: bolder;
+}

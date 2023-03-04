@@ -1,20 +1,22 @@
 
 import React from 'react'
 import "./logout.css"
-import {useNavigate} from "react-router-dom"
-function Logout() {
-    const navigate=useNavigate()
-    const handleLogout=()=>{
-        localStorage.setItem("Authorization", "")
-        localStorage.removeItem("name")
-        navigate("/")
-    }
+import { useNavigate } from "react-router-dom"
+
+const Logout = () => {
+  const navigate = useNavigate()
+  const handleLogout = () => {
+    // localStorage.removeItem("Authorization")
+    localStorage.setItem("Authorization", "")
+    // localStorage.removeItem("name")
+    navigate("/")
+  }
   return (
     <>
-    <div className='logoutbtn'>
+      <div className='logoutbtn'>
         <p onClick={handleLogout}>Logout</p>
-    </div>
-    
+      </div>
+
     </>
   )
 }

@@ -3,20 +3,29 @@ import React from 'react'
 import { useState, useEffect } from "react"
 import axios from 'axios'
 import Logout from '../logout/logout'
+import { useNavigate } from 'react-router-dom'
 import "./todo.css"
 
 function Todo() {
     const [uname, setUname] = useState("")
     const [actList, setActList] = useState([])
+    const navigate=useNavigate()
     const refresh = () => {
         window.location.reload(false);
     }
+    const atoken = localStorage.getItem("Authorization")
+    if(!atoken){
+        navigate("/")
+    }
+
+
     const handleEdit = (id) => {
         const token = localStorage.getItem("Authorization")
         const work = prompt("Enter the task")
         console.log(work)
         axios({
-            url: `http://localhost:5000/edit/${id}`,
+            url: `https://todo-list-server-qued.onrender.com/edit/${id}`,
+            // url: `http://localhost:5000/edit/${id}`,
             method: "put",
             headers: {
                 authorization: token
@@ -31,14 +40,15 @@ function Todo() {
         })
         setTimeout(() => {
             window.location.reload(false);
-        }, 10);
+        }, 1000);
     }
     const deletesingle = (id) => {
         let data = [id];
         let token = localStorage.getItem("Authorization");
         axios({
             method: "DELETE",
-            url: "http://localhost:5000/delete",
+            url: "https://todo-list-server-qued.onrender.com/delete",
+            // url: "http://localhost:5000/delete",
             headers: {
                 authorization: token,
             },
@@ -48,14 +58,15 @@ function Todo() {
         });
         setTimeout(() => {
             window.location.reload(false);
-        }, 10);
+        }, 1000);
         alert("task will be deleted !")
     };
     const handleAdd = () => {
         const work = prompt("Enter the task")
         let token = localStorage.getItem("Authorization")
         axios({
-            url: "http://localhost:5000/addtodo",
+            url: "https://todo-list-server-qued.onrender.com/addtodo",
+            // url: "http://localhost:5000/addtodo",
             method: "post",
             headers: {
                 authorization: token
@@ -64,13 +75,14 @@ function Todo() {
                 task: work
             }
         }).then((res) => {
-            console.log(res.data)
+            console.log(res)
+            console.log("/addtodo")
         }).catch((err) => {
             console.log(err.message)
         })
         setTimeout(() => {
             window.location.reload(false);
-        }, 10);
+        }, 1000);
     }
 
     useEffect(() => {
@@ -84,7 +96,8 @@ function Todo() {
 
         // console.log(token)
         axios({
-            url: "http://localhost:5000/uname",
+            url: "https://todo-list-server-qued.onrender.com/uname",
+            // url: "http://localhost:5000/uname",
             method: "get",
             headers: {
                 authorization: token
@@ -99,7 +112,8 @@ function Todo() {
         let token = localStorage.getItem("Authorization")
 
         axios({
-            url: "http://localhost:5000/alltasks",
+            url: "https://todo-list-server-qued.onrender.com/alltasks",
+            // url: "http://localhost:5000/alltasks",
             method: "get",
             headers: {
                 authorization: token
